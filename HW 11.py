@@ -22,3 +22,15 @@ class ServerQueue:
         print("Statistiky požadavků:")
         for user, request_time in self.statistics:
             print(f"Uživatel: {user}, Čas: {request_time}")
+
+# Příklad použití
+server_queue = ServerQueue()
+server_queue.add_request('Uživatel1', 2)
+server_queue.add_request('Uživatel2', 1)
+server_queue.add_request('Uživatel3', 3)
+
+server_queue.process_request()
+server_queue.process_request()
+server_queue.process_request()
+
+server_queue.print_statistics()
