@@ -151,3 +151,62 @@ app.delete_word('world')
 
 app.display_top_words()
 app.display_top_words(least=True)
+
+#Task 4
+class TaxOfficeDatabase:
+    def __init__(self):
+        self.database = {}
+
+    def add_person(self, id_code, name, city):
+        self.database[id_code] = {'name': name, 'city': city, 'penalties': []}
+
+    def add_penalty(self, id_code, penalty_type, amount):
+        if id_code in self.database:
+            self.database[id_code]['penalties'].append({'type': penalty_type, 'amount': amount})
+
+    def delete_penalty(self, id_code, penalty_type):
+        if id_code in self.database:
+            self.database[id_code]['penalties'] = [p for p in self.database[id_code]['penalties'] if p['type'] != penalty_type]
+
+    def replace_person_info(self, id_code, name, city):
+        if id_code in self.database:
+            self.database[id_code]['name'] = name
+            self.database[id_code]['city'] = city
+
+    def full_hard_copy(self):
+        for id_code, info in self.database.items():
+            print(f"ID: {id_code}, Name: {info['name']}, City: {info['city']}, Penalties: {info['penalties']}")
+
+    def hard_copy_by_code(self, id_code):
+        if id_code in self.database:
+            info = self.database[id_code]
+            print(f"ID: {id_code}, Name: {info['name']}, City: {info['city']}, Penalties: {info['penalties']}")
+
+    def hard_copy_by_penalty_type(self, penalty_type):
+        for id_code, info in self.database.items():
+            penalties = [p for p in info['penalties'] if p['type'] == penalty_type]
+            if penalties:
+                print(f"ID: {id_code}, Name: {info['name']}, City: {info['city']}, Penalties: {penalties}")
+
+    def hard_copy_by_city(self, city):
+        for id_code, info in self.database.items():
+            if info['city'] == city:
+                print(f"ID: {id_code}, Name: {info['name']}, City: {info['city']}, Penalties: {info['penalties']}")
+
+# Příklad použití
+db = TaxOfficeDatabase()
+db.add_person('123', 'Alice', 'Prague')
+db.add_person('456', 'Bob', 'Brno')
+db.add_penalty('123', 'Late Payment', 100)
+db.add_penalty('123', 'Tax Evasion', 500)
+db.add_penalty('456', 'Late Payment', 150)
+
+db.full_hard_copy()
+db.hard_copy_by_code('123')
+db.hard_copy_by_penalty_type('Late Payment')
+db.hard_copy_by_city('Prague')
+
+db.replace_person_info('123', 'Alice Smith', 'Prague')
+db.delete_penalty('123', 'Tax Evasion')
+
+db.full_hard_copy()
