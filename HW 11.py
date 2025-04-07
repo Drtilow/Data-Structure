@@ -87,3 +87,67 @@ def simulate_pier(passenger_interval, boat_interval, boat_capacity, simulation_t
 
 # Příklad použití
 simulate_pier(passenger_interval=5, boat_interval=15, boat_capacity=20, simulation_time=100)
+
+#Task 3
+class DictionaryApp:
+    def __init__(self):
+        self.dictionary = {}
+        self.request_counter = {}
+
+    def add_word(self, word, translation):
+        self.dictionary[word] = translation
+        self.request_counter[word] = 0
+
+    def replace_word(self, old_word, new_word, translation):
+        if old_word in self.dictionary:
+            del self.dictionary[old_word]
+            del self.request_counter[old_word]
+        self.dictionary[new_word] = translation
+        self.request_counter[new_word] = 0
+
+    def delete_word(self, word):
+        if word in self.dictionary:
+            del self.dictionary[word]
+            del self.request_counter[word]
+
+    def add_translation(self, word, translation):
+        if word in self.dictionary:
+            self.dictionary[word] = translation
+
+    def replace_translation(self, word, translation):
+        self.add_translation(word, translation)
+
+    def delete_translation(self, word):
+        if word in self.dictionary:
+            self.dictionary[word] = None
+
+    def display_word(self, word):
+        if word in self.dictionary:
+            self.request_counter[word] += 1
+            print(f"{word}: {self.dictionary[word]}")
+        else:
+            print(f"{word} not found in dictionary.")
+
+    def display_top_words(self, top_n=10, least=False):
+        sorted_words = sorted(self.request_counter.items(), key=lambda x: x[1], reverse=not least)
+        for word, count in sorted_words[:top_n]:
+            print(f"{word}: {count} requests")
+
+# Example usage
+app = DictionaryApp()
+app.add_word('hello', 'hola')
+app.add_word('world', 'mundo')
+app.add_word('goodbye', 'adiós')
+
+app.display_word('hello')
+app.display_word('world')
+app.display_word('goodbye')
+app.display_word('hello')
+
+app.replace_word('goodbye', 'farewell', 'adiós')
+app.display_word('farewell')
+
+app.delete_word('world')
+
+app.display_top_words()
+app.display_top_words(least=True)
